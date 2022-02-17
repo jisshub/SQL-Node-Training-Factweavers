@@ -84,3 +84,60 @@ exports.CallThisFunc = (addRow) => {
     },5000);
 }
 ```
+
+## Inserting Multiple Records 
+
+
+**addMultipleRecs.js**
+
+```javascript
+const mysql = require('mysql');
+const config = require('./config.js');
+const connection = mysql.createConnection(config);
+
+const sqlStmt = 'INSERT INTO todo(user,notes) VALUES ?';
+const values = [['Enrique', 'sample notes 1'], ['Mbappe', 'sample notes 2'],
+    ['Benzema', 'sample notes 3']];
+
+
+connection.query(sqlStmt, [values], (err, results, fields) => {
+    if (err) {
+        return console.error(err.message);
+    }
+    console.log('Row Inserted', results.affectedRows);
+});
+
+```
+
+Then Run,
+
+```bash
+node addMultipleRecs.js
+```
+
+
+## Update a Record
+
+```javascript
+const mysql = require('mysql');
+const config = require('./config.js');
+const connection = mysql.createConnection(config);
+
+const sqlStmt = 'UPDATE todo set notes= ? WHERE user= ?';
+const data = ['football player', 'Benzema'];
+
+connection.query(sqlStmt, data, (error, results, fields) => {
+    if (error) {
+        return console.error(error.message);
+    }
+    console.log('Rows Affected', results.affectedRows);
+});
+
+
+```
+
+Then Run,
+
+```bash
+node addMultipleRecs.js
+```
