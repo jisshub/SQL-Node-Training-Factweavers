@@ -1,3 +1,7 @@
+MySQL Node Tutorial Link:
+
+[MySQL Node Tutorial](https://www.mysqltutorial.org/mysql-nodejs/)
+
 ## Step 1: Install mysql node module
 
 ```bash
