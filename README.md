@@ -19,6 +19,9 @@ GRANT ALL PRIVILEGES ON * . * TO 'username'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
+```bash
+mysql> sudo mysql -u newuser -p
+```
 
 ## Initial Connection Set Up
 
@@ -116,7 +119,7 @@ connection.query(sqlStmt, [values], (err, results, fields) => {
 Then Run,
 
 ```bash
-node addMultipleRecs.js
+node handlers/addMultipleRecs.js
 ```
 
 
@@ -143,7 +146,7 @@ connection.query(sqlStmt, data, (error, results, fields) => {
 Then Run,
 
 ```bash
-node addMultipleRecs.js
+node handlers/updateRecord.js
 ```
 
 
