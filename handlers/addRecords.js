@@ -32,6 +32,3 @@ exports.CallThisFunc = (addRow) => {
         });
     },5000);
 }
-// exports.finalData = (data) => {
-//     console.log(data);
-// }

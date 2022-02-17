@@ -1,7 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const {printNumberAsync, printNumber} = require('./handlers/test')
-const {addRow, CallThisFunc} = require('./handlers/addRecords');
+const {addRow, CallThisFunc } = require('./handlers/addRecords');
+const {addMultipleRows, CallThisFunc_1} = require('./handlers/addMultipleRecs');
 
 // configure dotenv - laod env variables
 dotenv.config({ path: './config/config.env' });
@@ -17,10 +18,14 @@ app.listen(PORT, () => {
   console.log(`App runs in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
 
-printNumberAsync(1, (date)=> {
-    printNumber(date)
-})
+// printNumberAsync(1, (date)=> {
+//     printNumber(date)
+// })
 
-CallThisFunc((data) => {
-  addRow(data);
-})
+// CallThisFunc((data) => {
+//   addRow(data);
+// })
+
+CallThisFunc_1((data) => {
+  addMultipleRows(data);
+});
