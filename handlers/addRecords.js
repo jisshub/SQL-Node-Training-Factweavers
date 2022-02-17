@@ -23,14 +23,15 @@ exports.addRow = (data) => {
 
 // timeout just to avoid firing query before connection happens
 
-setTimeout(() => {
-    // call the function
-    addRow({
-        "user": "Ajith",
-        "value": "Just adding a note"
-    });
-},5000);
-
-exports.finalData = (data) => {
-    console.log(data);
+exports.CallThisFunc = (addRow) => {
+    setTimeout(() => {
+        // call the function
+        addRow({
+            "user": "Saviour",
+            "value": "Just adding a note"
+        });
+    },5000);
 }
+// exports.finalData = (data) => {
+//     console.log(data);
+// }

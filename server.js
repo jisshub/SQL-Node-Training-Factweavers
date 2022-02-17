@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const {printNumberAsync, printNumber} = require('./handlers/test')
-const {addRow} = require('./handlers/addRecords');
+const {addRow, CallThisFunc} = require('./handlers/addRecords');
 
 // configure dotenv - laod env variables
 dotenv.config({ path: './config/config.env' });
@@ -21,6 +21,6 @@ printNumberAsync(1, (date)=> {
     printNumber(date)
 })
 
-addRow((data)=>{
-  console.log(data);
-});
+CallThisFunc((data) => {
+  addRow(data);
+})
