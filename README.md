@@ -132,12 +132,94 @@ connection.query(sqlStmt, data, (error, results, fields) => {
     }
     console.log('Rows Affected', results.affectedRows);
 });
-
-
 ```
 
 Then Run,
 
 ```bash
 node addMultipleRecs.js
+```
+
+
+## Querying / Selecting Data in MYSQL
+
+
+**handlers/selectData.js**
+
+```javascript
+const mysql = require('mysql');
+const config = require('./config.js');
+const connection = mysql.createConnection(config);
+
+const sqlStmt = 'SELECT * FROM todo';
+connection.query(sqlStmt, (error, results, fields) => {
+    if (error) {
+        return console.error(error.message);
+    }
+    console.log(results);
+});
+
+connection.end();
+
+```
+
+Then run,
+```bash
+node handlers/selectData.js
+```
+
+
+## Passing data to the query
+
+```javascript
+const mysql = require('mysql');
+const config = require('./config.js');
+const connection = mysql.createConnection(config);
+
+const sqlStmt = 'SELECT * FROM todo WHERE user= ?';
+
+connection.query(sqlStmt, ['Enrique'], (error, results, fields) => {
+    if (error) {
+        return console.error(error.message);
+    }
+    console.log(results);
+});
+
+connection.end();
+
+```
+
+Then run,
+
+```bash
+node handlers/selectByData.js
+```
+
+
+## Delete Data
+
+```javascript
+const mysql = require('mysql');
+const config = require('./config.js');
+const connection = mysql.createConnection(config);
+
+// delete record
+const sqlStmt = 'DELETE FROM todo WHERE user= ?';
+
+// pass sql statement and user.
+connection.query(sqlStmt, ['Enrique'], (error, results, fields) => {
+    if (error) {
+        return console.error(error.message);
+    }
+    console.log('Deleted Row:', results.affectedRows);
+});
+
+connection.end();
+
+```
+
+Then run,
+
+```bash
+node handlers/deleteData.js
 ```
