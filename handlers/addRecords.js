@@ -1,34 +1,15 @@
 const mysql = require('mysql');
+const config = require('./config.js');
+const connection = mysql.createConnection(config);
 
-const pool = mysql.createPool({
-    connectionLimit: 100,
-    host: 'localhost',
-    user: 'newuser',
-    password: 'Pass@#123',
-    database: 'todolist',
+const sqlStmt = 'INSERT INTO todo (user, notes) VALUES (?,?)';
+
+
+connection.query(sqlStmt, ['salah', 'liverpool player'], (error, results, fields) => {
+    if (error) {
+        return console.error(error.message);
+    }
+    console.log('Inserted Row:', results.affectedRows);
 });
 
-exports.addRow = (data) => {
-    let insertQuery = 'INSERT INTO ?? (??,??) VALUES (?,?)';
-    let query = mysql.format(insertQuery,["todo","user","notes",data.user,data.value]);
-    pool.query(query,(err, response) => {
-        if(err) {
-            console.error(err);
-            return;
-        }
-        // rows added
-        console.log(response.insertId);
-    });
-}
-
 // timeout just to avoid firing query before connection happens
-
-exports.CallThisFunc = (addRow) => {
-    setTimeout(() => {
-        // call the function
-        addRow({
-            "user": "Saviour",
-            "value": "Just adding a note"
-        });
-    },5000);
-}

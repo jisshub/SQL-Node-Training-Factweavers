@@ -47,48 +47,52 @@ connection.connect(function (err) {
 node app.js
 ```
 
-## Inserting Rows into Table
+## Setting Configurations
+
+**config.js**
 
 ```javascript
 const mysql = require('mysql');
-const pool = mysql.createPool({
-    connectionLimit: 100,
+
+const config = {
     host: 'localhost',
     user: 'newuser',
     password: 'Pass@#123',
     database: 'todolist',
+};
+
+module.exports = config;
+```
+
+## Inserting Rows into Table
+
+**handlers/addRecord.js**
+
+```javascript
+const mysql = require('mysql');
+const config = require('./config.js');
+const connection = mysql.createConnection(config);
+
+const sqlStmt = 'INSERT INTO todo (user, notes) VALUES (?,?)';
+
+
+connection.query(sqlStmt, ['salah', 'liverpool player'], (error, results, fields) => {
+    if (error) {
+        return console.error(error.message);
+    }
+    console.log('Inserted Row:', results.affectedRows);
 });
+```
 
-exports.addRow = (data) => {
-    let insertQuery = 'INSERT INTO ?? (??,??) VALUES (?,?)';
-    let query = mysql.format(insertQuery,["todo","user","notes",data.user,data.value]);
-    pool.query(query,(err, response) => {
-        if(err) {
-            console.error(err);
-            return;
-        }
-        // rows added
-        console.log(response.insertId);
-    });
-}
+Then Run below,
 
-// timeout just to avoid firing query before connection happens
-
-exports.CallThisFunc = (addRow) => {
-    setTimeout(() => {
-        // call the function
-        addRow({
-            "user": "Saviour",
-            "value": "Just adding a note"
-        });
-    },5000);
-}
+```bash
+node handlers/addRecord.js
 ```
 
 ## Inserting Multiple Records 
 
-
-**addMultipleRecs.js**
+**handlers/addMultipleRecs.js**
 
 ```javascript
 const mysql = require('mysql');
@@ -118,6 +122,8 @@ node addMultipleRecs.js
 
 ## Update a Record
 
+**handlers/updateRecord.js**
+
 ```javascript
 const mysql = require('mysql');
 const config = require('./config.js');
@@ -142,7 +148,6 @@ node addMultipleRecs.js
 
 
 ## Querying / Selecting Data in MYSQL
-
 
 **handlers/selectData.js**
 
@@ -171,6 +176,8 @@ node handlers/selectData.js
 
 ## Passing data to the query
 
+**handlers/selectByData.js**
+
 ```javascript
 const mysql = require('mysql');
 const config = require('./config.js');
@@ -198,6 +205,8 @@ node handlers/selectByData.js
 
 ## Delete Data
 
+**handlers/deletData.js**
+
 ```javascript
 const mysql = require('mysql');
 const config = require('./config.js');
@@ -222,4 +231,90 @@ Then run,
 
 ```bash
 node handlers/deleteData.js
+```
+
+## Using Stored Procedure in MYSQL NODE.
+
+The steps for calling a stored procedure are similar to the steps for executing a query as follows:
+
+1. Connect to the MySQL database server.
+
+2. Call the stored procedure by executing the **CALL spName** statement. The **spName** is the name of the stored procedure.
+
+3. Close the database connection.
+
+### Calling a MySQL stored procedure.
+
+We create a new stored procedure **filterTodo** to query rows from the **todo** table based on the value of the **user** field.
+
+Note: 
+1. Create this stored procedure in the **todolist** database. 
+2. Use MySQL workbench to create the stored procedure.
+
+**filterTodo.sql**
+
+```sql
+DELIMITER $$
+
+CREATE PROCEDURE `filterTodo`(IN player VARCHAR(255))
+BEGIN
+    SELECT * FROM todo WHERE user = player;
+END$$
+```
+
+- The stored procedure filterTodo returns the rows in the **todo** table based on the **player** argument.
+- Call stored procedure in MySQL,
+
+```bash
+mysql> CALL filterTodo('salah');
+```
+
+**RESULT:**
+
+```bash
++-------+------------------+
+| user  | notes            |
++-------+------------------+
+| salah | liverpool player |
++-------+------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+```
+- It returns the data with user as salah.
+
+
+The following storedproc.js program calls the **filterTodo** stored procedure and returns the result set:
+
+**storedProcedure.js**
+
+```javascript
+const mysql = require('mysql');
+const config = require('./config.js');
+
+const connection = mysql.createConnection(config);
+
+const sqlStmt = `CALL filterTodo(?)`;
+
+connection.query(sqlStmt, 'salah', (error, results, fields)=>{
+    if (error) {
+        return console.error(error.message);
+    }
+    console.log(results[0]);
+});
+
+connection.end();
+```
+
+- In the CALL statement, we used a placeholder (?) to pass data to the stored procedure.
+
+- When we called the query() method on the connection object, we pass the value of the **player** argument as the second argument of the query() method.
+
+
+Then run,
+
+```bash
+node handlers/storedProcedure.js
+
+[ RowDataPacket { user: 'salah', notes: 'liverpool player' } ]
 ```
