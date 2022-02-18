@@ -5,7 +5,7 @@ const connection = mysql.createConnection(config);
 const sqlStmt = 'INSERT INTO todo (user, notes) VALUES (?,?)';
 
 
-connection.query(sqlStmt, ['salah', 'liverpool player'], (error, results, fields) => {
+connection.query(sqlStmt, ['martial', 'sevilla player'], (error, results, fields) => {
     if (error) {
         return console.error(error.message);
     }
