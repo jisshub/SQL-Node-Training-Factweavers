@@ -73,6 +73,38 @@ const config = {
 module.exports = config;
 ```
 
+## Create Table from scratch
+
+**handler-ver2/createTable.js**
+
+```javascript
+const mysql = require('mysql');
+const config = require('./config.js');
+const connection = mysql.createConnection(config);
+
+const sqlStmt = `CREATE TABLE sales (id int not null, 
+                                    customer_type varchar(50),
+                                    unit_price decimal(10, 2),
+                                    qty int not null,
+                                    total decimal(10, 2))
+                                    ;`;
+
+
+connection.query(sqlStmt, (error, results, fields) => {
+    if (error) {
+        return console.error(error.message);
+    }
+    console.log('table created');
+});
+
+```
+
+Then Run,
+
+```bash
+$ node handler-ver2/createTable.js
+```
+
 ## Inserting Rows into Table
 
 **handlers/addRecord.js**
@@ -96,7 +128,7 @@ connection.query(sqlStmt, ['salah', 'liverpool player'], (error, results, fields
 Then Run below,
 
 ```bash
-node handlers/addRecord.js
+$ node handlers/addRecord.js
 ```
 
 ## Inserting Multiple Records 
