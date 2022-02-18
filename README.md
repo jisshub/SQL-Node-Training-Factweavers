@@ -15,6 +15,8 @@ npm i mysql
 mysql> sudo mysql -u root -p
 ```
 
+root password: root@#123
+
 #### create a new user in your MySQL server with ‘mysql_native_password’ authentication mechanisum.
 
 ```bash
